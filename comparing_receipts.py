@@ -1,6 +1,7 @@
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
+from datetime import datetime
 import json
 import os
 
@@ -61,6 +62,7 @@ Your tasks:
 1. Verify arithmetic: Does subtotal + tax = total? (allow ±$0.02 rounding)
 2. Verify line items: Do line items sum to subtotal?
 3. Check for anomalies:
+   - Date in the future compared to today's date ({datetime.today().strftime('%Y-%m-%d')})
    - Unusual merchant names
    - Suspicious date/time patterns
    - Currency mismatches
@@ -109,6 +111,21 @@ def basic_validation(receipt_data):
     reasons = []
     anomalies = []
     fraud_score = 0
+
+    # Check if date is in the future
+    try:
+        receipt_date = datetime.strptime(receipt_data.get("date", ""), "%Y-%m-%d")
+        today = datetime.today()
+        if receipt_date.date() > today.date():
+            anomalies.append(f"Receipt date {receipt_data.get('date')} is in the future")
+            reasons.append(f"Receipt date {receipt_data.get('date')} is invalid (future date)")
+            fraud_score += 40
+    except ValueError:
+        # Invalid date format
+        anomalies.append(f"Invalid date format: {receipt_data.get('date')}")
+        reasons.append(f"Invalid date format")
+        fraud_score += 20
+
     
     # Check arithmetic
     calculated_total = receipt_data.get('subtotal', 0) + receipt_data.get('tax', 0)
@@ -126,7 +143,7 @@ def basic_validation(receipt_data):
     if receipt_data.get('line_items'):
         line_total = sum(item['quantity'] * item['price'] for item in receipt_data['line_items'])
         line_items_valid = abs(line_total - receipt_data.get('subtotal', 0)) <= 0.02
-        
+
         if not line_items_valid:
             reasons.append(f"Line items sum to {line_total:.2f} but subtotal is {receipt_data.get('subtotal')}")
             fraud_score += 30
@@ -184,7 +201,7 @@ def compare_to_certified(user_input, receipt_id):
 
 # Example Usage
 if __name__ == "__main__":
-    print("=== DEEPFAKE RECEIPT ANALYZER (Gemini-Enhanced) ===\n")
+    print("--- DEEPFAKE RECEIPT ANALYZER (Gemini-Enhanced) ---\n")
     
     # Example 1: Valid receipt
     print("--- Example 1: Valid Receipt ---")
@@ -204,7 +221,7 @@ if __name__ == "__main__":
             {"item": "Cheese", "quantity": 2, "price": 15.56}
         ]
     }
-    
+
     analysis = analyze_receipt_with_gemini(valid_receipt)
     print(json.dumps(analysis, indent=2))
     
