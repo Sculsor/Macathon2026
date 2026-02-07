@@ -11,7 +11,7 @@ def compute_canonical_hash(data):
         # We use .get() to avoid KeyErrors if Gemini misses a field
         canonical = {
             "merchant": str(data.get('merchant', '')).lower().strip(),
-            "date": str(data.get('date', '')).strip(),
+            "date": str(data.get('date', "null")).strip(),
             "currency": str(data.get('currency', 'CAD')).upper().strip(),
             "subtotal": "{:.2f}".format(float(data.get('subtotal', 0))),
             "tax": "{:.2f}".format(float(data.get('tax', 0))),
