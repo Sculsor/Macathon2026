@@ -1,7 +1,11 @@
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
 import json
 import os
+
+
+load_dotenv()
 
 # Your API key
 API_KEY = os.getenv("GEMINI_API_KEY")
@@ -81,7 +85,7 @@ Return ONLY this JSON format, no other text:
     try:
         # Call Gemini with TEXT only (no image)
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model='gemini-2.5-flash',
             contents=prompt
         )
         
