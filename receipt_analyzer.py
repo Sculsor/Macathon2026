@@ -1,4 +1,4 @@
-import google.generativeai as genai
+import google.genai as genai
 import json
 from PIL import Image
 
@@ -77,7 +77,7 @@ Return ONLY the JSON. No other text.
 # Test the function
 if __name__ == "__main__":
     # Test with your receipt image
-    receipt_path = r"C:\Users\macma\Macathon2026\tests\receipt.jpg"
+    receipt_path = "tests/receipt.jpg"
     
     print("Analyzing receipt.....")
     
