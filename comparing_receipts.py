@@ -83,7 +83,7 @@ Return ONLY this JSON format, no other text:
   "anomalies_found": ["anomaly 1", ...]
 }}
 """
-    
+
     try:
         # Call Gemini with TEXT only (no image)
         response = client.models.generate_content(
