@@ -1,6 +1,8 @@
 import google.generativeai as genai
 import json
+from PIL import Image
 
+# Your API key
 API_KEY = "AIzaSyCS-tKJMvqec28l9BOgiKFuNgJKvH3mdEg"
 
 # Configure Gemini
@@ -10,6 +12,9 @@ def analyze_receipt(image_path):
     """
     Analyzes a receipt image and returns structured JSON
     """
+    
+    # Load the image using PIL
+    img = Image.open(image_path)
     
     # Create the prompt for Gemini
     prompt = """
@@ -54,21 +59,9 @@ Return format:
 Return ONLY the JSON. No other text.
 """
     
-    # Upload the image file with mime type specified
-    with open(image_path, 'rb') as f:
-        uploaded_file = client.files.upload(
-            file=f,
-            config={'mime_type': 'image/jpeg'}
-        )
-    
-    # Send to Gemini with the uploaded file - CHANGED MODEL NAME
-    response = client.models.generate_content(
-        model='gemini-2.0-flash',
-        contents=[
-            prompt,
-            uploaded_file
-        ]
-    )
+    # Create model and generate content
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    response = model.generate_content([prompt, img])
     
     # Get the text response
     result_text = response.text
