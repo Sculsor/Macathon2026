@@ -1,5 +1,5 @@
 import json
-from receipt_analyzer import analyze_receipt
+from comparing_receipts import analyze_receipt_with_gemini
 from hashing import compute_canonical_hash, verify_receipt
 
 def test_receipt_integration(image_path, blockchain_memo=None):
@@ -13,7 +13,7 @@ def test_receipt_integration(image_path, blockchain_memo=None):
     try:
         # Step 1: Analyze the receipt
         print(f"\n[Step 1] Analyzing receipt from: {image_path}")
-        receipt_data = analyze_receipt(image_path)
+        receipt_data = analyze_receipt_with_gemini(image_path)
         
         print("\n[Receipt Analysis Result]")
         print(json.dumps(receipt_data, indent=2))
