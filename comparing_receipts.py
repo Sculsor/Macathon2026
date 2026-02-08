@@ -5,7 +5,6 @@ from datetime import datetime
 import json
 import os
 
-
 load_dotenv()
 
 # Your API key
@@ -199,7 +198,6 @@ def compare_to_certified(user_input, receipt_id):
     
     return matches, differences
 
-# Example Usage
 if __name__ == "__main__":
     print("--- DEEPFAKE RECEIPT ANALYZER (Gemini-Enhanced) ---\n")
     
