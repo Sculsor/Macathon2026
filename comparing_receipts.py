@@ -62,7 +62,7 @@ Your tasks:
 1. Verify arithmetic: Does subtotal + tax = total? (allow ±$0.02 rounding)
 2. Verify line items: Do line items sum to subtotal?
 3. Check for anomalies:
-   - Date in the future compared to today's date ({datetime.today().strftime('%Y-%m-%d')})
+   - Date in the future compared to today's date ({datetime.today().strftime('%Y-%m-%d')})        
    - Unusual merchant names
    - Suspicious date/time patterns
    - Currency mismatches
